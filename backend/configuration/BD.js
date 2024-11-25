@@ -15,4 +15,6 @@ const connectDBPG = async() => {
     }catch(error){
         res.status(404).json({message: 'No pudo haber conexión a la base de datos'}, error)
     }
-}
+};
+
+module.exports = {connectDBPG};
