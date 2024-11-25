@@ -14,8 +14,11 @@ select * from Usuario
 
 insert into Usuario values (1,'juan','gil','Sony','juangil123@gmail.com','password123','cliente')
 
+create type EstadoReserva as enum ('en espera','aceptada')
+
 create table Reservaciones(
 idReservaciones serial PRIMARY KEY,
+estadoReserva EstadoReserva
 hora time NOT NULL,
 fecha Date NOT NULL,
 razon varchar(255)NOT NULL,
@@ -25,12 +28,12 @@ FOREIGN KEY (idUsuario) references Usuario(idUsuario)
 
 
 create type Disponibilidad as enum ('si','no')
-create type Estado as enum ('abierto','cerrado')
+create type EstadoSala as enum ('abierto','cerrado')
 
 create table Salas(
 idSalas serial PRIMARY KEY,
 disponibilidad Disponibilidad,
-estado Estado,
+estadosala EstadoSala,
 idReservaciones serial,
 FOREIGN KEY (idReservaciones) references Reservaciones (idReservaciones)
 )
