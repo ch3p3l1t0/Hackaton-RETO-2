@@ -1,4 +1,4 @@
-const ReservationModel = require('../models/ReservationModel');
+const ReservationModel = require('../Models/FormularioReservacion');
 
 // Controlador para obtener todas las reservas
 const getAllReservations = async (req, res) => {

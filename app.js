@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const reservationRoutes = require('./routes/reservationRoutes');
+const reservationRoutes = require('./routes/FormularioReservacion');
 
 const app = express();
 const PORT = 4000;
