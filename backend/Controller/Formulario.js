@@ -8,6 +8,7 @@ const ReservationForm = () => {
     availability: "",
   });
 
+  const [userId, setUserId] = useState(1); // Simulación de usuario autenticado
   const [availableRooms, setAvailableRooms] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -44,6 +45,17 @@ const ReservationForm = () => {
     }
 
     try {
+      // Verificar si el usuario ya tiene una reserva activa
+      const userReservations = await axios.get(
+        `http://localhost:3000/reservations?user_id=eq.${userId}`
+      );
+
+      if (userReservations.data.length > 0) {
+        setError("Ya tienes una reserva activa. Cancela tu reserva actual antes de crear una nueva.");
+        setSuccess("");
+        return;
+      }
+
       // Verificar si la sala está disponible
       const response = await axios.get(
         `http://localhost:3000/rooms?sala=eq.${sala}&availability=eq.${availability}`
@@ -61,6 +73,7 @@ const ReservationForm = () => {
         sala,
         reason,
         availability,
+        user_id: userId, // Añadimos el usuario
       });
 
       setSuccess(`¡La sala ${sala} ha sido reservada con éxito!`);
