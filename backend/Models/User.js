@@ -1,37 +1,36 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { pool } = require('../config/database');
 
-// Modelo Usuario
-const Usuario = sequelize.define('Usuario', {
-    idusuario: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        serial: true,
-    },
-    nombre: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-    },
-    apellido: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-    },
-    empresa: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-    },
-    correo: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-    },
-    contrasena: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-    },
-    rol: {
-        type: DataTypes.STRING(50),
-        allowNull: true,
-    },
-});
+const getUsuarios = async () => {
+  const result = await pool.query('SELECT * FROM Usuario');
+  return result.rows;
+};
 
-module.exports = Usuario;
+const getUsuarioById = async (idUsuario) => {
+  const result = await pool.query('SELECT * FROM Usuario WHERE idUsuario = $1', [idUsuario]);
+  return result.rows[0];
+};
+
+const createUsuario = async (usuario) => {
+  const { nombre, apellido, empresa, correo, contraseña, rol } = usuario;
+  const result = await pool.query(
+    'INSERT INTO Usuario (nombre, apellido, empresa, correo, contraseña, rol) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+    [nombre, apellido, empresa, correo, contraseña, rol]
+  );
+  return result.rows[0];
+};
+
+const updateUsuario = async (idUsuario, usuario) => {
+  const { nombre, apellido, empresa, correo, contraseña, rol } = usuario;
+  const result = await pool.query(
+    'UPDATE Usuario SET nombre = $1, apellido = $2, empresa = $3, correo = $4, contraseña = $5, rol = $6 WHERE idUsuario = $7 RETURNING *',
+    [nombre, apellido, empresa, correo, contraseña, rol, idUsuario]
+  );
+  return result.rows[0];
+};
+
+module.exports = {
+  getUsuarios,
+  getUsuarioById,
+  createUsuario,
+  updateUsuario,
+};

@@ -1,41 +1,34 @@
-const Reservation = require('../Models/Reserva')
+const reservasModel = require('../models/reservasModel');
 
-// Crear una reserva
-exports.createReservation = async (req, res) => {
-    try {
-        const { room, date } = req.body;
-        const reservation = await Reservation.create({ room, date });
-        res.status(201).json(reservation);
-    } catch (error) {
-        res.status(500).json({ error: 'Error creando la reserva' });
-    }
+const listReservas = async (req, res) => {
+  try {
+    const reservas = await reservasModel.getReservas();
+    res.json(reservas);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
-// Obtener todas las reservas
-exports.getAllReservations = async (req, res) => {
-    try {
-        const reservations = await Reservation.findAll();
-        res.status(200).json(reservations);
-    } catch (error) {
-        res.status(500).json({ error: 'Error obteniendo las reservas' });
-    }
+const createReserva = async (req, res) => {
+  try {
+    const reserva = await reservasModel.createReserva(req.body);
+    res.status(201).json(reserva);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
-// Actualizar el estado de una reserva
-exports.updateReservationStatus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { status } = req.body;
-        const reservation = await Reservation.findByPk(id);
-        if (!reservation) {
-            return res.status(404).json({ error: 'Reserva no encontrada' });
-        }
-        reservation.status = status;
-        await reservation.save();
-        res.status(200).json(reservation);
-    } catch (error) {
-        res.status(500).json({ error: 'Error actualizando la reserva' });
-    }
+const updateReserva = async (req, res) => {
+  try {
+    const reserva = await reservasModel.updateReserva(req.params.idReservaciones, req.body.estadoReserva);
+    res.json(reserva);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
-module.exports = router;
+module.exports = {
+  listReservas,
+  createReserva,
+  updateReserva,
+};

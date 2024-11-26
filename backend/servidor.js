@@ -4,8 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const Availability = require('./models/Availability');
-const Event = require('./models/Event');
+const usuarioRoutes = require('./Routes/usuarioRoutes');
+const reservasRoutes = require('./Routes/routeReserva');
+const salasRoutes = require('./Routes/routeSala');
 const PORT = process.env.PORT || 5000;
 
 dotenv.config();
@@ -44,7 +45,10 @@ app.post('/api/reservaciones', async (req, res) => {
       res.status(500).send("Error creando la reserva");
     }
   });
-  
+
+app.use('/api', usuarioRoutes);
+app.use('/api', reservasRoutes);
+app.use('/api', salasRoutes);
 
 // Iniciamos el servidor
 app.listen(PORT, () => {

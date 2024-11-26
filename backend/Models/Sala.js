@@ -1,30 +1,29 @@
-const pool = require('../configuration/BD');
+const { pool } = require('../config/database');
 
-
-// Función para obtener todas las salas
 const getSalas = async () => {
-  const query = 'SELECT * FROM salas';
-
-  try {
-    const res = await pool.query(query);
-    return res.rows;
-  } catch (err) {
-    throw new Error('Error al obtener las salas: ' + err.message);
-  }
+  const result = await pool.query('SELECT * FROM Salas');
+  return result.rows;
 };
 
-
-const updateEstadoSala = async (id, estado) => {
-  const query = 'UPDATE salas SET estado = $1 WHERE idsalas = $2 RETURNING *';
-  const values = [estado, id];
-
-  try {
-    const res = await pool.query(query, values);
-    return res.rows[0];
-  } catch (err) {
-    throw new Error('Error al actualizar el estado de la sala: ' + err.message);
-  }
+const createSala = async (sala) => {
+  const { disponibilidad, estadosala, idReservaciones } = sala;
+  const result = await pool.query(
+    'INSERT INTO Salas (disponibilidad, estadosala, idReservaciones) VALUES ($1, $2, $3) RETURNING *',
+    [disponibilidad, estadosala, idReservaciones]
+  );
+  return result.rows[0];
 };
 
+const updateSala = async (idSalas, disponibilidad) => {
+  const result = await pool.query(
+    'UPDATE Salas SET disponibilidad = $1 WHERE idSalas = $2 RETURNING *',
+    [disponibilidad, idSalas]
+  );
+  return result.rows[0];
+};
 
-module.exports = { getSalas, updateEstadoSala };
+module.exports = {
+  getSalas,
+  createSala,
+  updateSala,
+};
