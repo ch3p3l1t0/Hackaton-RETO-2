@@ -1,0 +1,73 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const {pool} = require('../config/database'); // Conexión a la base de datos
+const JWT_SECRET = 'secreto_super_seguro'; // Cambia este valor a algo más seguro
+
+// Registro de usuarios
+exports.register = async (req, res) => {
+  const { nombre, apellido, empresa, correo, contraseña } = req.body;
+
+  try {
+    // Verificar si el correo ya está registrado
+    const emailCheck = await pool.query('SELECT * FROM Usuario WHERE correo = $1', [correo]);
+    if (emailCheck.rows.length > 0) {
+      return res.status(400).json({ error: 'El correo ya está registrado' });
+    }
+
+    // Hashear la contraseña
+    const hashedPassword = await bcrypt.hash(contraseña, 10);
+
+    // Insertar el usuario en la base de datos
+    const query = `
+      INSERT INTO Usuario (nombre, apellido, empresa, correo, contraseña, idRol)
+      VALUES ($1, $2, $3, $4, $5, 1) RETURNING *`; // Rol 1: cliente
+    const values = [nombre, apellido, empresa, correo, hashedPassword];
+    const result = await pool.query(query, values);
+
+    res.status(201).json({ message: 'Usuario registrado exitosamente', user: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al registrar el usuario' });
+  }
+};
+
+// Login de usuarios
+exports.login = async (req, res) => {
+  const { correo, contraseña } = req.body;
+
+  try {
+    // Verificar si el usuario existe
+    const userQuery = 'SELECT * FROM Usuario WHERE correo = $1';
+    const result = await pool.query(userQuery, [correo]);
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Correo o contraseña incorrectos' });
+    }
+
+    const user = result.rows[0];
+
+    // Comparar la contraseña
+    const validPassword = await bcrypt.compare(contraseña, user.contraseña);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Correo o contraseña incorrectos' });
+    }
+
+    // Generar token JWT
+    const token = jwt.sign({ idUsuario: user.idusuario, rol: user.idrol }, JWT_SECRET, { expiresIn: '1h' });
+
+    // Configurar la cookie del token
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    res.status(200).json({ message: 'Inicio de sesión exitoso', user: { nombre: user.nombre, rol: user.idrol } });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al iniciar sesión' });
+  }
+};
+
+// Cerrar sesión
+exports.logout = (req, res) => {
+  res.clearCookie('token');
+  res.status(200).json({ message: 'Sesión cerrada exitosamente' });
+};

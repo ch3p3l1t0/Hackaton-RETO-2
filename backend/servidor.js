@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const usuarioRoutes = require('./Routes/usuarioRoutes');
 const reservasRoutes = require('./Routes/routeReserva');
+const adminRoutes = require('./Routes/adminRoutes');
 const salasRoutes = require('./Routes/routeSala');
 const PORT = process.env.PORT || 5000;
 
@@ -24,6 +25,7 @@ app.get('/conect', connectDBPG);
 app.use('/api', usuarioRoutes);
 app.use('/api', reservasRoutes);
 app.use('/api', salasRoutes);
+app.use('/api', adminRoutes);
 
 // Iniciamos el servidor
 app.listen(PORT, () => {
