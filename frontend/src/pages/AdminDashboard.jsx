@@ -1,26 +1,41 @@
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
+import CardAdmin from "../components/CardAdmin";
 export default function AdminDashboard() {
   return (
-    <div>
-      <Sidebar>
-        <Menu
-          menuItemStyles={{
-            button: ({ level, active, disabled }) => {
-              // only apply styles on first level elements of the tree
-              if (level === 0)
-                return {
-                  color: disabled ? "#f5d9ff" : "#d359ff",
-                  backgroundColor: active ? "#eecef9" : undefined,
-                };
-            },
-          }}>
-          <MenuItem component={<Link to="/dashboard/admin" />}>Home</MenuItem>
-          <MenuItem component={<Link to="/dashboard/admin/listRervations" />}>
+    <>
+      <Sidebar
+        rootStyles={{
+          height: "100vh",
+          textAlign: "center",
+          justifyContent: "center",
+        }}>
+        <Menu>
+          <MenuItem
+            component={<Link to="/dashboard/admin" />}
+            menuItemStyles={{
+              padding: "1rem",
+              color: "white",
+              fontSize: "1.5rem",
+            }}>
+            Home
+          </MenuItem>
+          <MenuItem
+            component={<Link to="/dashboard/admin/listRervations" />}
+            menuItemStyles={{
+              padding: "1rem",
+              color: "white",
+              fontSize: "1.5rem",
+            }}>
             List Reservations
           </MenuItem>
         </Menu>
       </Sidebar>
-    </div>
+      <div className="flex justify-between">
+        <div>div1</div>
+        <div>div2</div>
+        <div>div3</div>
+      </div>
+    </>
   );
 }

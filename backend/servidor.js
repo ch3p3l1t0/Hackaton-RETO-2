@@ -1,14 +1,14 @@
+const express = require("express");
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const { Pool } = require('pg');
-const authRoutes = require('./Routes/authRoutes');
-const usuarioRoutes = require('./Routes/usuarioRoutes');
-const reservasRoutes = require('./Routes/routeReserva');
-const adminRoutes = require('./Routes/adminRoutes');
-const salasRoutes = require('./Routes/routeSala');
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const { Pool } = require("pg");
+const authRoutes = require("./Routes/authRoutes");
+const usuarioRoutes = require("./Routes/usuarioRoutes");
+const reservasRoutes = require("./Routes/routeReserva");
+const adminRoutes = require("./Routes/adminRoutes");
+const salasRoutes = require("./Routes/routeSala");
 
 // Configuración de dotenv para leer variables del archivo .env
 dotenv.config();
@@ -28,31 +28,37 @@ const pool = new Pool({
 
 // Middleware para permitir solicitudes con cuerpos JSON y habilitar CORS
 app.use(bodyParser.json());
-app.use(cors());  // Habilitar CORS para todas las solicitudes
+app.use(cors()); // Habilitar CORS para todas las solicitudes
 
 // Ruta para verificar la conexión a la base de datos
-app.get('/conect', (req, res) => {
-  pool
-    .connect()
-    .then(client => {
-      return client.query('SELECT NOW()')
-        .then(result => {
-          res.status(200).json({ message: 'Conexión exitosa', time: result.rows[0] });
-          client.release();
-        })
-        .catch(err => {
-          res.status(500).json({ message: 'Error de conexión a la base de datos', error: err });
+app.get("/conect", (req, res) => {
+  pool.connect().then((client) => {
+    return client
+      .query("SELECT NOW()")
+      .then((result) => {
+        res
+          .status(200)
+          .json({ message: "Conexión exitosa", time: result.rows[0] });
+        client.release();
+      })
+      .catch((err) => {
+        res.status(500).json({
+          message: "Error de conexión a la base de datos",
+          error: err,
         });
-    });
+      });
+  });
 });
 
 // Ruta de ejemplo para agregar una reserva (similar a la que tenías en `FormularioReservacion.js`)
-app.post('/api/reservations', (req, res) => {
+app.post("/api/reservations", (req, res) => {
   const { estadoReserva, hora, fecha, razon, idUsuario } = req.body;
 
   // Validar los datos recibidos
   if (!estadoReserva || !hora || !fecha || !razon || !idUsuario) {
-    return res.status(400).json({ message: 'Todos los campos son requeridos.' });
+    return res
+      .status(400)
+      .json({ message: "Todos los campos son requeridos." });
   }
 
   // Insertar la reserva en la base de datos
@@ -62,20 +68,25 @@ app.post('/api/reservations', (req, res) => {
   `;
   const values = [estadoReserva, hora, fecha, razon, idUsuario];
 
-  pool.query(query, values)
-    .then(result => {
-      res.status(201).json({ message: 'Reserva creada con éxito', reservation: result.rows[0] });
+  pool
+    .query(query, values)
+    .then((result) => {
+      res.status(201).json({
+        message: "Reserva creada con éxito",
+        reservation: result.rows[0],
+      });
     })
-    .catch(err => {
-      res.status(500).json({ message: 'Error al insertar la reserva', error: err });
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ message: "Error al insertar la reserva", error: err });
     });
 });
 
 // Rutas adicionales (puedes agregarlas según las necesidades de tu proyecto)
-app.get('/', (req, res) => {
-  res.send('¡Servidor funcionando!');
+app.get("/", (req, res) => {
+  res.send("¡Servidor funcionando!");
 });
-
 
 // Ruta para obtener la disponibilidad de un usuario
 app.get("/api/disponible/:userId", require("./rutas/disponible"));
