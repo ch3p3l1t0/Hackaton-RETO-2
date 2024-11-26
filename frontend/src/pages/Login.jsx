@@ -1,6 +1,8 @@
-import React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaLock, FaEnvelope } from "react-icons/fa";
+import { useSpring, animated } from "@react-spring/web";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const {
@@ -8,21 +10,40 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log("Login Data:", data);
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  });
+
+  // Animación para que el formulario se desplace desde la izquierda hacia el centro
+  const animationStyles = useSpring({
+    from: { transform: "translateX(-100%)", opacity: 0 }, // Comienza fuera de la pantalla
+    to: { transform: "translateX(0%)", opacity: 1 }, // Termina en su posición final
+    config: { tension: 170, friction: 20 }, // Configuración de suavidad
+  });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-teal-500">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+      {/* Aplica la animación al contenedor principal */}
+      <animated.div
+        style={animationStyles}
+        className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md"
+      >
         <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">
           Bienvenido de nuevo
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-         
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600 mb-1">Correo Electrónico</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Correo Electrónico
+            </label>
             <div className="flex items-center border rounded-lg focus-within:ring-2 focus-within:ring-cyan-500">
               <FaEnvelope className="ml-3 text-gray-500" />
               <input
@@ -39,13 +60,16 @@ export default function Login() {
               />
             </div>
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
-  
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-600 mb-1">Contraseña</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Contraseña
+            </label>
             <div className="flex items-center border rounded-lg focus-within:ring-2 focus-within:ring-cyan-500">
               <FaLock className="ml-3 text-gray-500" />
               <input
@@ -68,11 +92,9 @@ export default function Login() {
             )}
           </div>
 
-          
           <button
             type="submit"
-            className="w-full py-2 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-lg shadow-md transition duration-300"
-          >
+            className="w-full py-2 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-lg shadow-md transition duration-300">
             Iniciar Sesión
           </button>
         </form>
@@ -81,12 +103,11 @@ export default function Login() {
           ¿No tienes una cuenta?{" "}
           <a
             href="/register"
-            className="text-teal-500 hover:text-teal-600 font-medium"
-          >
+            className="text-teal-500 hover:text-teal-600 font-medium">
             Regístrate
           </a>
         </p>
-      </div>
+      </animated.div>
     </div>
   );
 }

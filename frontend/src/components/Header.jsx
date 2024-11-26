@@ -23,7 +23,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gray-800 text-white py-4 fixed top-0 left-0 right-0">
+    <header className="bg-gray-800 text-white py-4 top-0 left-0 right-0">
       <nav className="container mx-auto flex justify-between items-center">
         <h1 className="text-lg font-bold">Empresa Nido</h1>
         <div className="flex space-x-4 items-center">
