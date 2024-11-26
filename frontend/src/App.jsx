@@ -11,10 +11,10 @@ import UserDashboard from "./pages/UserDashboard";
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gradient-to-r from-green-400 to-teal-500">
       <Header />
 
-      <div className="flex-grow">
+      <div className="flex">
         <Routes>
           <Route
             path="/"

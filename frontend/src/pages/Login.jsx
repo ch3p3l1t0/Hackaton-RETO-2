@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaLock, FaEnvelope } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const {
@@ -7,10 +9,17 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log("Login Data:", data);
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-teal-500">
