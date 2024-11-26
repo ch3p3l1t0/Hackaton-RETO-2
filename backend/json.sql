@@ -19,6 +19,7 @@ http://localhost:5000/auth/register
 }
 
 
+http://localhost:5000/admin/reservas/cambiar-estado
 {
     "idReservaciones": 1,
     "estadoReserva": "aceptada"
