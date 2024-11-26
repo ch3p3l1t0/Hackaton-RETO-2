@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { FaLock, FaEnvelope } from "react-icons/fa";
 
@@ -20,9 +19,10 @@ export default function Login() {
           Bienvenido de nuevo
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-         
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600 mb-1">Correo Electrónico</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Correo Electrónico
+            </label>
             <div className="flex items-center border rounded-lg focus-within:ring-2 focus-within:ring-cyan-500">
               <FaEnvelope className="ml-3 text-gray-500" />
               <input
@@ -39,13 +39,16 @@ export default function Login() {
               />
             </div>
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
-  
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-600 mb-1">Contraseña</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Contraseña
+            </label>
             <div className="flex items-center border rounded-lg focus-within:ring-2 focus-within:ring-cyan-500">
               <FaLock className="ml-3 text-gray-500" />
               <input
@@ -68,11 +71,9 @@ export default function Login() {
             )}
           </div>
 
-          
           <button
             type="submit"
-            className="w-full py-2 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-lg shadow-md transition duration-300"
-          >
+            className="w-full py-2 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-lg shadow-md transition duration-300">
             Iniciar Sesión
           </button>
         </form>
@@ -81,8 +82,7 @@ export default function Login() {
           ¿No tienes una cuenta?{" "}
           <a
             href="/register"
-            className="text-teal-500 hover:text-teal-600 font-medium"
-          >
+            className="text-teal-500 hover:text-teal-600 font-medium">
             Regístrate
           </a>
         </p>

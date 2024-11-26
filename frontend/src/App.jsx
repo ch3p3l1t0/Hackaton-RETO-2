@@ -1,18 +1,17 @@
 import { Route, Routes } from "react-router-dom";
 
-import "./App.css";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import Error404 from "./pages/Error404";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import Register from "./pages/Register";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen ">
+    <div className="flex flex-col min-h-screen">
       <Header />
 
       <div className="flex-grow">
@@ -33,6 +32,7 @@ function App() {
             path="/register"
             element={<Register />}
           />
+          {/* rutas protegidas */}
           <Route
             path="/dashboard/admin"
             element={<AdminDashboard />}
