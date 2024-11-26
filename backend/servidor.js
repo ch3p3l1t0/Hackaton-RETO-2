@@ -1,12 +1,12 @@
-const { Pool } = require('pg');
-const { connectDBPG } = require('./configuracion/BD');
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
-const usuarioRoutes = require('./Routes/usuarioRoutes');
-const reservasRoutes = require('./Routes/routeReserva');
-const salasRoutes = require('./Routes/routeSala');
+const { Pool } = require("pg");
+const { connectDBPG } = require("./configuracion/BD");
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
+const usuarioRoutes = require("./Routes/usuarioRoutes");
+const reservasRoutes = require("./Routes/routeReserva");
+const salasRoutes = require("./Routes/routeSala");
 const PORT = process.env.PORT || 5000;
 
 dotenv.config();
@@ -16,39 +16,39 @@ const app = express();
 
 // Middleware para permitir solicitudes con cuerpos JSON
 app.use(bodyParser.json());
-app.use(cors());  // Para habilitar CORS en tu API
+app.use(cors()); // Para habilitar CORS en tu API
 
 // Ruta para verificar la conexión a la base de datos
-app.get('/conect', connectDBPG);
+app.get("/conect", connectDBPG);
 
 // Ruta para obtener la disponibilidad de un usuario
-app.get('/api/disponible/:userId', require('./rutas/disponible'));
+app.get("/api/disponible/:userId", require("./rutas/disponible"));
 
-app.post('/api/reservaciones', async (req, res) => {
-    const { userId, roomId, fecha_inicio, fecha_fin, motivo } = req.body;
-    try {
-      const room = await Room.findByPk(roomId);
-      if (!room) {
-        return res.status(404).json({ message: 'Salón no encontrado' });
-      }
-  
-      const reservation = await Reservation.create({
-        user_id: userId,
-        room_id: roomId,
-        fecha_inicio,
-        fecha_fin,
-        motivo,
-      });
-  
-      res.status(201).json(reservation);
-    } catch (err) {
-      res.status(500).send("Error creando la reserva");
+app.post("/api/reservaciones", async (req, res) => {
+  const { userId, roomId, fecha_inicio, fecha_fin, motivo } = req.body;
+  try {
+    const room = await Room.findByPk(roomId);
+    if (!room) {
+      return res.status(404).json({ message: "Salón no encontrado" });
     }
-  });
 
-app.use('/api', usuarioRoutes);
-app.use('/api', reservasRoutes);
-app.use('/api', salasRoutes);
+    const reservation = await Reservation.create({
+      user_id: userId,
+      room_id: roomId,
+      fecha_inicio,
+      fecha_fin,
+      motivo,
+    });
+
+    res.status(201).json(reservation);
+  } catch (err) {
+    res.status(500).send("Error creando la reserva");
+  }
+});
+
+app.use("/api", usuarioRoutes);
+app.use("/api", reservasRoutes);
+app.use("/api", salasRoutes);
 
 // Iniciamos el servidor
 app.listen(PORT, () => {
