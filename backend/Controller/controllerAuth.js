@@ -5,7 +5,7 @@ const JWT_SECRET = 'secreto_super_seguro'; // Cambia este valor a algo más segu
 
 // Registro de usuarios
 exports.register = async (req, res) => {
-  const { nombre, apellido, empresa, correo, contraseña } = req.body;
+  const { nombre, apellido, empresa, correo, contraseña, rol } = req.body;
 
   try {
     // Verificar si el correo ya está registrado
@@ -19,14 +19,19 @@ exports.register = async (req, res) => {
 
     // Insertar el usuario en la base de datos
     const query = `
-      INSERT INTO Usuario (nombre, apellido, empresa, correo, contraseña, idRol)
-      VALUES ($1, $2, $3, $4, $5, 1) RETURNING *`; // Rol 1: cliente
-    const values = [nombre, apellido, empresa, correo, hashedPassword];
+      INSERT INTO Usuario (nombre, apellido, empresa, correo, contraseña, rol)
+      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`; // Rol 1: cliente
+    const values = [nombre, apellido, empresa, correo, hashedPassword, rol || 'cliente']; // Usar rol 1 si no se proporciona otro valor
     const result = await pool.query(query, values);
 
-    res.status(201).json({ message: 'Usuario registrado exitosamente', user: result.rows[0] });
+    // Responder con el usuario creado
+    res.status(201).json({
+      message: 'Usuario registrado exitosamente',
+      user: result.rows[0], // El usuario recién creado
+    });
   } catch (error) {
-    res.status(500).json({ error: 'Error al registrar el usuario' });
+    console.error('Error al registrar usuario:', error);
+    res.status(500).json({ error: 'Hubo un error al registrar el usuario', details: error.message });
   }
 };
 
