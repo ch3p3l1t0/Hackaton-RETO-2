@@ -78,7 +78,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRoutes);
 app.use('/api', usuarioRoutes);
-app.use('/api', reservasRoutes);
+app.use('/reserver', reservasRoutes);
 app.use('/api', salasRoutes);
 app.use('/api', adminRoutes);
 
