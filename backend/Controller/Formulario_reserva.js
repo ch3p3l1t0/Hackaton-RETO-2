@@ -12,7 +12,7 @@ const getAllReservations = async (req, res) => {
 
 // Controlador para crear una nueva reserva
 const createReservation = async (req, res) => {
-  const { sala, reason, availability, user_id } = req.body;
+  const { sala, reason, availability, user_id, hora, fecha } = req.body.reservation;
 
   try {
     // Verificar si el usuario ya tiene una reserva activa
@@ -21,8 +21,8 @@ const createReservation = async (req, res) => {
       return res.status(400).json({ error: 'El usuario ya tiene una reserva activa' });
     }
 
-    // Crear una nueva reserva
-    const reservation = await ReservationModel.createReservation({ sala, reason, availability, user_id });
+    // Crear una nueva reserva, incluyendo hora y fecha
+    const reservation = await ReservationModel.createReservation({ sala, reason, availability, user_id, hora, fecha });
     res.status(201).json(reservation);
   } catch (error) {
     res.status(500).json({ error: error.message });

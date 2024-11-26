@@ -1,19 +1,34 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // Asegúrate de tener la conexión configurada
+const salasModel = require('../Models/User');
 
-const Room = sequelize.define('Room', {
-  nombre: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  capacidad: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  descripcion: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-});
+const listSalas = async (req, res) => {
+  try {
+    const salas = await salasModel.getSalas();
+    res.json(salas);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
-module.exports = Room;
+const createSala = async (req, res) => {
+  try {
+    const sala = await salasModel.createSala(req.body);
+    res.status(201).json(sala);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const updateSala = async (req, res) => {
+  try {
+    const sala = await salasModel.updateSala(req.params.idSalas, req.body.disponibilidad);
+    res.json(sala);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+module.exports = {
+  listSalas,
+  createSala,
+  updateSala,
+};
