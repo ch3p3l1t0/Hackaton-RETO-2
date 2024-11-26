@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <Header />
-      <div>
+      <div className="flex h-[calc(100vh-100px)] items-center justify-center">
         <Routes>
           <Route
             path="/"
@@ -35,6 +35,10 @@ function App() {
           {/* Rutas Privadas  */}
           <Route
             path="/dashboard/admin"
+            element={<AdminDashboard />}
+          />
+          <Route
+            path="/dashboard/admin/listRervations"
             element={<AdminDashboard />}
           />
           <Route
