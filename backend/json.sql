@@ -7,3 +7,19 @@ http://localhost:5000/reserver/create
     "razon": "Reunion de alto nivel",
     "idUsuario": 2
 }
+
+http://localhost:5000/auth/register
+{
+    "nombre": "Juanitos",
+    "apellido": "Perez",
+    "empresa": "Junitos Organizados",
+    "correo": "jeperea45@example.com",
+    "contraseña": "Juanito123",
+    "rol": "admin"
+}
+
+
+{
+    "idReservaciones": 1,
+    "estadoReserva": "aceptada"
+}

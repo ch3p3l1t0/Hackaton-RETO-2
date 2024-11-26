@@ -80,7 +80,7 @@ app.use('/auth', authRoutes);
 app.use('/api', usuarioRoutes);
 app.use('/reserver', reservasRoutes);
 app.use('/api', salasRoutes);
-app.use('/api', adminRoutes);
+app.use('/admin', adminRoutes);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
