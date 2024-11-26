@@ -1,4 +1,4 @@
-const reservasModel = require('../Models/Reserva');
+const reservasModel = require("../Models/Reserva");
 
 const listReservas = async (req, res) => {
   try {
@@ -20,7 +20,10 @@ const createReserva = async (req, res) => {
 
 const updateReserva = async (req, res) => {
   try {
-    const reserva = await reservasModel.updateReserva(req.params.idReservaciones, req.body.estadoReserva);
+    const reserva = await reservasModel.updateReserva(
+      req.params.idReservaciones,
+      req.body.estadoReserva
+    );
     res.json(reserva);
   } catch (error) {
     res.status(500).send(error.message);

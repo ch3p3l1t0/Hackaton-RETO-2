@@ -1,5 +1,8 @@
-const { getReservasPendientes, updateEstadoReserva } = require('../Models/Reserva');
-const nodemailer = require('nodemailer');
+const {
+  getReservasPendientes,
+  updateEstadoReserva,
+} = require("../Models/Reserva");
+const nodemailer = require("nodemailer");
 
 // Listar reservas pendientes
 exports.listReservasPendientes = async (req, res) => {
@@ -20,23 +23,31 @@ exports.cambiarEstadoReserva = async (req, res) => {
 
     // Enviar notificación por correo
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        user: 'tu_correo@gmail.com',
-        pass: 'tu_contraseña',
+        user: "retonidohachaton@gmail.com",
+        pass: "lzfy woeb tngd txrr",
       },
     });
 
     const mailOptions = {
-      from: 'tu_correo@gmail.com',
+      from: "retonidohachaton@gmail.com",
       to: emailUsuario,
       subject: `Estado de tu reserva: ${estado}`,
-      text: `Hola, tu reserva ha sido ${estado}. Gracias por usar nuestro servicio.`,
+      text: `Hola ${emailUsuario}, tu reserva reserva ha sido ${estado}.
+            Gracias por usar nuestro servicio
+            Detalles:
+            - Fecha: ${idReserva.fecha}
+            - Hora: ${idReserva.hora}
+            `,
     };
 
     await transporter.sendMail(mailOptions);
 
-    res.status(200).json({ mensaje: 'Reserva actualizada y correo enviado', reserva: reservaActualizada });
+    res.status(200).json({
+      mensaje: "Reserva actualizada y correo enviado",
+      reserva: reservaActualizada,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
