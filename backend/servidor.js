@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const { connectDBPG } = require('./configuracion/BD');
+const { connectDBPG } = require('./configuration/BD');
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -21,8 +21,6 @@ app.use(cors());  // Para habilitar CORS en tu API
 // Ruta para verificar la conexión a la base de datos
 app.get('/conect', connectDBPG);
 
-// Ruta para obtener la disponibilidad de un usuario
-app.get('/api/disponible/:userId', require('./rutas/disponible'));
 
 app.post('/api/reservaciones', async (req, res) => {
     const { userId, roomId, fecha_inicio, fecha_fin, motivo } = req.body;
