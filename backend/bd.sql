@@ -18,7 +18,7 @@ create type EstadoReserva as enum ('en espera','aceptada')
 
 create table Reservaciones(
 idReservaciones serial PRIMARY KEY,
-estadoReserva EstadoReserva
+estadoReserva EstadoReserva,
 hora time NOT NULL,
 fecha Date NOT NULL,
 razon varchar(255)NOT NULL,

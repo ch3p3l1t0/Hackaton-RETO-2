@@ -8,7 +8,7 @@ const getReservas = async () => {
 const createReserva = async (reserva) => {
   const { estadoReserva, hora, fecha, razon, idUsuario } = reserva;
   const result = await pool.query(
-    'INSERT INTO Reservaciones (estadoReserva, hora, fecha, razon, idUsuario) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+    'INSERT INTO reservaciones (estadoReserva, hora, fecha, razon, idUsuario) VALUES ($1, $2, $3, $4, $5) RETURNING *',
     [estadoReserva, hora, fecha, razon, idUsuario]
   );
   return result.rows[0];
