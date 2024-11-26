@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
+const authRoutes = require('./Routes/authRoutes');
 const usuarioRoutes = require('./Routes/usuarioRoutes');
 const reservasRoutes = require('./Routes/routeReserva');
 const adminRoutes = require('./Routes/adminRoutes');
@@ -22,6 +23,7 @@ app.use(cors());  // Para habilitar CORS en tu API
 // Ruta para verificar la conexión a la base de datos
 app.get('/conect', connectDBPG);
 
+app.use('/auth', authRoutes);
 app.use('/api', usuarioRoutes);
 app.use('/api', reservasRoutes);
 app.use('/api', salasRoutes);

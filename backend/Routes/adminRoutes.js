@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const adminController = require('../controllers/adminController');
+const adminController = require('../Controller/controllerAdmin');
 
 // Listar reservas pendientes
 router.get('/reservas', adminController.listReservasPendientes);

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {pool} = require('../config/database'); // Conexión a la base de datos
+const {pool} = require('../configuration/BD'); // Conexión a la base de datos
 const JWT_SECRET = 'secreto_super_seguro'; // Cambia este valor a algo más seguro
 
 // Registro de usuarios
