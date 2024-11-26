@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaLock, FaEnvelope } from "react-icons/fa";
+import { useSpring, animated } from "@react-spring/web";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -21,9 +22,19 @@ export default function Login() {
     }
   });
 
+  // Animación para que el formulario se desplace desde la izquierda hacia el centro
+  const animationStyles = useSpring({
+    from: { transform: "translateX(-100%)", opacity: 0 }, // Comienza fuera de la pantalla
+    to: { transform: "translateX(0%)", opacity: 1 }, // Termina en su posición final
+    config: { tension: 170, friction: 20 }, // Configuración de suavidad
+  });
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-teal-500">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+      {/* Aplica la animación al contenedor principal */}
+      <animated.div
+        style={animationStyles}
+        className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">
           Bienvenido de nuevo
         </h2>
@@ -70,7 +81,7 @@ export default function Login() {
                   },
                 })}
                 className="w-full p-2 border-none focus:outline-none"
-                placeholder="********"
+                placeholder=""
               />
             </div>
             {errors.password && (
@@ -95,7 +106,7 @@ export default function Login() {
             Regístrate
           </a>
         </p>
-      </div>
+      </animated.div>
     </div>
   );
 }
